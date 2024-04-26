@@ -5,7 +5,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
 @ToString
-class Account {
+class   Account {
     private String name;
     private Map<Currency, Integer> currenc = new HashMap<>();
     private Deque<Command> saves = new ArrayDeque<>();
@@ -13,11 +13,9 @@ class Account {
     public Account(String name) {
         setName(name);
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         String tmp = Account.this.name;
         if (name == null || name.isBlank()) throw new IllegalArgumentException("Некорректное значение для имени");
@@ -34,32 +32,33 @@ class Account {
     }
 
     public void addCurrenc(Currency currency, int amount) {
-        Map<Currency, Integer> tmp=new HashMap<>();
         if (currency == null) throw new IllegalArgumentException("Валюта не может быть пустой");
         if (amount < 0) throw new IllegalArgumentException("Количество валюты должно быть положительным числом");
+        Map<Currency, Integer> tmp=new HashMap<>();
         tmp.clear();
         tmp.putAll(Account.this.currenc);
         saves.push(()->Account.this.currenc=tmp);
         currenc.put(currency, amount);
     }
 
-    public Save save() {
-        return new AccSave();
+    public Saveable save() {
+        return new Snapshot();
     }
 
     public void undo() {
+        if (saves.isEmpty()) throw new RuntimeException("Стек пустой. Нечего откатывать");
         saves.pop().make();
     }
 
-    public Save load() {
-        return new AccSave();
+    public Saveable load() {
+        return new Snapshot();
     }
 
-    private class AccSave implements Save {
+    private class Snapshot implements Saveable {
         private String name;
         private final Map<Currency, Integer> currenc;
 
-        public AccSave() {
+        public Snapshot() {
             this.name = Account.this.name;
             this.currenc = new HashMap<>(Account.this.currenc);
         }

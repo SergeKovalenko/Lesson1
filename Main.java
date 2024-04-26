@@ -3,8 +3,16 @@ package Lesson1;
 public class Main {
     public static void main(String[] args) {
         Account acc1=new Account("Новый");
-        acc1.setName("Первый");
-        acc1.addCurrenc(Currency.CNY,100);
+        acc1.setName("Первый1");
+        acc1.setName("Первый2");System.out.println("1. Проверка сохранения/отката    - "+acc1);
+
+        acc1.undo();
+        acc1.undo();
+        acc1.undo();
+       // acc1.undo();
+        System.out.println("1. Проверка сохранения/отката    - "+acc1);
+
+        /*acc1.addCurrenc(Currency.CNY,100);
         acc1.addCurrenc(Currency.USD,200);
         Save acc_s1=acc1.save();
         System.out.println("1. Проверка сохранения/отката    - "+acc1);
@@ -33,7 +41,7 @@ public class Main {
         System.out.println("Отмена до шаг 2- "+acc1);
         acc1.undo();
         System.out.println("Отмена до шаг 1- "+acc1);
-
+*/
 
     }
 }
